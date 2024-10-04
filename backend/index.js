@@ -49,6 +49,31 @@ app.post('/login', (req, res)=>{
     })
 })
 
+app.get('/userDetails', (req, res) => {
+    const email = req.query.email; // Obtendo o email dos parâmetros de consulta
+
+    // Buscando o usuário no banco de dados usando o email
+    FormDataModel.findOne({ email: email })
+        .then(user => {
+            if (user) {
+                // Se o usuário for encontrado, retorne os dados do usuário
+                res.json({
+                    email: user.email,
+                    name: user.name, // Adicione o campo name se existir no modelo
+                    // Adicione outros detalhes que você quiser retornar
+                });
+            } else {
+                // Se o usuário não for encontrado, retorne 404
+                res.status(404).send('User not found');
+            }
+        })
+        .catch(err => {
+            // Em caso de erro ao acessar o banco de dados
+            console.error(err);
+            res.status(500).send('Internal server error');
+        });
+});
+
 app.listen(3001, () => {
     console.log("Server listining on http://127.0.0.1:3001");
 
