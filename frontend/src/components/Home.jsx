@@ -1,3 +1,4 @@
+// Home.jsx
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
@@ -7,16 +8,16 @@ const Home = () => {
 
   useEffect(() => {
     // Verifica se o usuário está logado e obtém o nome do usuário do localStorage
-    const user = JSON.parse(localStorage.getItem('user'));
-    
-    if (user) {
-      setUserName(user.name); // Seta o nome do utilizador
+    const name = localStorage.getItem('userName'); // Alterado aqui para pegar diretamente o nome
+    if (name) {
+      setUserName(name); // Seta o nome do utilizador
     }
   }, []);
 
   const handleLogout = () => {
     // Limpa os dados do usuário do localStorage
-    localStorage.removeItem('user');
+    localStorage.removeItem('userId'); // Limpa o ID do usuário
+    localStorage.removeItem('userName'); // Limpa o nome do usuário
     navigate('/login');
   };
 
@@ -38,6 +39,6 @@ const Home = () => {
       )}
     </div>
   );
-}
+};
 
 export default Home;
