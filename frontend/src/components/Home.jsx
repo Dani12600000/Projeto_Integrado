@@ -30,8 +30,8 @@ const Home = () => {
         </>
       ) : (
         <>
-          <h1>Welcome to Our App!</h1>
-          <p>You can explore our features without logging in.</p>
+          <h1>Welcome to Dan Games reviews</h1>
+          <p>You can explore the reviews of other players without logging in.</p>
           <Link to="/login" className="btn btn-primary my-2">Login</Link>
           <Link to="/register" className="btn btn-secondary my-2">Register</Link>
         </>
