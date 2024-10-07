@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-mongoose.connect('mongodb+srv://mongo:mongo@cluster0.l1qg8.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/utilizadores');
+mongoose.connect('mongodb://localhost:27017/utilizadores');
 
 app.post('/register', (req, res) => {
     const { email, password } = req.body;
