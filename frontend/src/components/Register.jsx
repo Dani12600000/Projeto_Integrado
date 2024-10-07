@@ -11,10 +11,9 @@ const Register = () => {
 
     useEffect(() => {
         // Verifica se o usuário já está logado
-        const user = JSON.parse(localStorage.getItem('user'));
-        if (user) {
-            // Se o usuário estiver logado, redireciona para a página inicial ou outra página apropriada
-            navigate('/home');
+        const userId = localStorage.getItem('userId');
+        if (userId) {
+            navigate('/home'); // Redireciona para a página inicial
         }
     }, [navigate]);
 

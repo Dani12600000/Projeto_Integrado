@@ -1,6 +1,5 @@
-// Login.jsx
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 
@@ -8,6 +7,14 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
+
+    useEffect(() => {
+        // Verifica se o usuário já está logado
+        const userId = localStorage.getItem('userId');
+        if (userId) {
+            navigate('/home'); // Redireciona para a página inicial
+        }
+    }, [navigate]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
