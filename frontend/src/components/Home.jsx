@@ -1,4 +1,3 @@
-// Home.jsx
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
@@ -25,7 +24,10 @@ const Home = () => {
     <div style={{ backgroundImage: "linear-gradient(#00d5ff,#0095ff,rgba(93,0,255,.555))", height: "100vh" }} className="d-flex flex-column">
       <header className="d-flex justify-content-between align-items-center p-3">
         <div>
-          <img src="/DaniLike_Games.jpg" alt="Logo" style={{ height: '50px' }} />
+          {/* Logo que redireciona para a página home */}
+          <Link to="/">
+            <img src="https://raw.githubusercontent.com/Dani12600000/Projeto_Integrado/refs/heads/main/frontend/DaniLike_Games.jpg" alt="Logo" style={{ height: '50px' }} />
+          </Link>
         </div>
         <div>
           {userName ? (
