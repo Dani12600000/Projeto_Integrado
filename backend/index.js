@@ -41,5 +41,5 @@ app.post('/login', (req, res) => {
 });
 
 app.listen(3001, () => {
-    console.log("Server listening on http://127.0.0.1:3001");
+    console.log("Server listening on http://localhost:27017");
 });
