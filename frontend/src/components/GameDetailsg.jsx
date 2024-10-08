@@ -3,10 +3,12 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const GameDetails = () => {
-  const { id } = useParams();
+  const { id } = useParams(); // ID do jogo
   const [game, setGame] = useState(null);
   const [loading, setLoading] = useState(true);
   const [userName, setUserName] = useState("");
+  const [userId, setUserId] = useState("");
+  const [isFavorited, setIsFavorited] = useState(false); // Controle para verificar se o jogo é favorito
   const navigate = useNavigate();
 
   // Função para buscar detalhes do jogo
@@ -21,12 +23,44 @@ const GameDetails = () => {
     }
   };
 
-  useEffect(() => {
-    const name = localStorage.getItem("userName");
-    if (name) {
-      setUserName(name);
+  // Função para verificar se o jogo é favorito
+  const checkIfFavorited = async (gameId, userId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3001/favorites/${userId}`
+      );
+      if (response.data.some((game) => game._id === gameId)) {
+        setIsFavorited(true);
+      }
+    } catch (error) {
+      console.error("Erro ao verificar favoritos:", error);
     }
-    fetchGameDetails(id);
+  };
+
+  // Função para adicionar ou remover um jogo dos favoritos
+  const handleFavoriteToggle = async () => {
+    try {
+      await axios.post("http://localhost:3001/favorites", {
+        userId,
+        gameId: id,
+      });
+      setIsFavorited(!isFavorited); // Alterna o estado
+    } catch (error) {
+      console.error("Erro ao atualizar favoritos:", error);
+    }
+  };
+
+  useEffect(() => {
+    const storedUserName = localStorage.getItem("userName");
+    const storedUserId = localStorage.getItem("userId");
+    if (storedUserName) {
+      setUserName(storedUserName);
+    }
+    if (storedUserId) {
+      setUserId(storedUserId); // Seta o ID do usuário
+      checkIfFavorited(id, storedUserId); // Verifica se o jogo já é favorito
+    }
+    fetchGameDetails(id); // Busca os detalhes do jogo usando o ID
   }, [id]);
 
   const handleLogout = () => {
@@ -83,6 +117,16 @@ const GameDetails = () => {
             <img src={game.image} alt={game.title} style={{ width: "300px" }} />
             <p>Avaliação: {game.rating}⭐</p>
             <p>{game.description}</p>
+            {userId && ( // Mostrar botão de favoritar apenas para usuários logados
+              <button
+                className={`btn ${isFavorited ? "btn-danger" : "btn-primary"}`}
+                onClick={handleFavoriteToggle}
+              >
+                {isFavorited
+                  ? "Remover dos Favoritos"
+                  : "Adicionar aos Favoritos"}
+              </button>
+            )}
           </>
         ) : (
           <p>Jogo não encontrado.</p>
