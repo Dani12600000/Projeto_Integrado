@@ -14,7 +14,7 @@ mongoose.connect('mongodb://localhost:27017/utilizadores', {
   useUnifiedTopology: true,
 });
 
-// Rota para registro de usuários
+// Rota para registro de utilizadores
 app.post('/register', (req, res) => {
   const { email, password } = req.body;
   FormDataModel.findOne({ email: email })
@@ -29,7 +29,7 @@ app.post('/register', (req, res) => {
     });
 });
 
-// Rota para login de usuários
+// Rota para login de utilizadores
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
   FormDataModel.findOne({ email: email })
