@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(cors());
 
 // Conectar ao MongoDB
-mongoose.connect('mongodb://localhost:27017/utilizadores', {
+mongoose.connect('mongodb://localhost:27017/review_games_website', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });

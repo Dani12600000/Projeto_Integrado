@@ -1,16 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import axios from 'axios'; // Para fazer a requisição ao backend
 
 const Home = () => {
   const [userName, setUserName] = useState('');
+  const [games, setGames] = useState([]); // Armazena os jogos da base de dados
+  const [loading, setLoading] = useState(true); // Controla o carregamento dos dados
   const navigate = useNavigate();
-
-  // Exemplo de dados de jogos. Você pode buscar esses dados de uma API.
-  const games = [
-    { id: 1, title: 'Game 1', rating: 4.5, image: 'https://via.placeholder.com/100' },
-    { id: 2, title: 'Game 2', rating: 4.0, image: 'https://via.placeholder.com/100' },
-    { id: 3, title: 'Game 3', rating: 5.0, image: 'https://via.placeholder.com/100' },
-  ];
 
   useEffect(() => {
     // Verifica se o usuário está logado e obtém o nome do usuário do localStorage
@@ -18,6 +14,20 @@ const Home = () => {
     if (name) {
       setUserName(name); // Seta o nome do utilizador
     }
+
+    // Faz a requisição para buscar os jogos do MongoDB
+    const fetchGames = async () => {
+      try {
+        const response = await axios.get('http://localhost:3001/games'); // Rota que retorna os jogos
+        setGames(response.data); // Seta os jogos vindos da API no estado
+        setLoading(false); // Desativa o estado de carregamento
+      } catch (error) {
+        console.error('Erro ao buscar jogos:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchGames();
   }, []);
 
   const handleLogout = () => {
@@ -53,18 +63,26 @@ const Home = () => {
 
       <section className="d-flex flex-column align-items-center">
         <h2>Jogos Disponíveis</h2>
-        <div className="game-list d-flex flex-wrap justify-content-center">
-          {games.map(game => (
-            <div key={game.id} className="game-item m-3 text-center">
-              <h3>{game.title}</h3>
-              <p>Avaliação: {game.rating}</p>
-              <Link to={`/game/${game.id}`}>
-                <img src={game.image} alt={game.title} style={{ width: '100px' }} />
-                <p>Ver detalhes</p>
-              </Link>
-            </div>
-          ))}
-        </div>
+        {loading ? (
+          <p>Carregando jogos...</p> // Mostra mensagem de carregamento enquanto os dados não chegam
+        ) : (
+          <div className="game-list d-flex flex-wrap justify-content-center">
+            {games.length > 0 ? (
+              games.map(game => (
+                <div key={game._id} className="game-item m-3 text-center">
+                  <h3>{game.title}</h3>
+                  <p>Avaliação: {game.rating}</p>
+                  <Link to={`/game/${game._id}`}>
+                    <img src={game.image} alt={game.title} style={{ width: '100px' }} />
+                    <p>Ver detalhes</p>
+                  </Link>
+                </div>
+              ))
+            ) : (
+              <p>Nenhum jogo encontrado.</p> // Caso não haja jogos na base de dados
+            )}
+          </div>
+        )}
       </section>
     </div>
   );
