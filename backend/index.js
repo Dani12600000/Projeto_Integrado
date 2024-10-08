@@ -24,7 +24,7 @@ app.post('/register', (req, res) => {
       } else {
         FormDataModel.create(req.body)
           .then(log_reg_form => res.json(log_reg_form))
-          .catch(err => res.json(err));
+          .catch(err => res.status(400).json({ message: 'Erro ao registrar', error: err }));
       }
     });
 });
@@ -47,6 +47,13 @@ app.post('/login', (req, res) => {
     });
 });
 
+// Rota para buscar todos os jogos
+app.get('/games', (req, res) => {
+  GameModel.find()
+    .then(games => res.json(games)) // Retorna a lista de jogos
+    .catch(error => res.status(500).json({ message: 'Erro ao buscar jogos', error }));
+});
+
 // Rota para buscar os detalhes de um jogo pelo ID
 app.get('/games/:id', (req, res) => {
   const gameId = req.params.id;
@@ -63,6 +70,21 @@ app.get('/games/:id', (req, res) => {
     .catch(error => {
       res.status(500).json({ message: 'Erro ao buscar o jogo.', error });
     });
+});
+
+// Rota para adicionar um novo jogo
+app.post('/games', (req, res) => {
+  const { title, rating, image, description } = req.body;
+
+  // Verifica se todos os campos estão preenchidos
+  if (!title || !rating || !image || !description) {
+    return res.status(400).json({ message: 'Todos os campos são obrigatórios.' });
+  }
+
+  // Cria um novo jogo
+  GameModel.create(req.body)
+    .then(newGame => res.status(201).json(newGame)) // Retorna o jogo criado
+    .catch(err => res.status(400).json({ message: 'Erro ao adicionar o jogo', error: err }));
 });
 
 // Inicia o servidor na porta 3001

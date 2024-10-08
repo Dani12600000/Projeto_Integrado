@@ -3,6 +3,7 @@ import Login from './Login';
 import Register from './Register';
 import GameDetailsg from './GameDetailsg';
 import {BrowserRouter, Routes, Route} from "react-router-dom";
+import AddGame from './AddGame';
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
           <Route path="/login" element ={<Login/>} />
           <Route path="/home" element ={<Home/>} />
           <Route path="/game/:id" element={<GameDetailsg />} />
+          <Route path="/addgame" element={<AddGame/>}/>
         </Routes>
       </BrowserRouter>
     </div>

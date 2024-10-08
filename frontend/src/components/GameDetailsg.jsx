@@ -66,7 +66,7 @@ const GameDetails = () => {
           <>
             <h1>{game.title}</h1>
             <img src={game.image} alt={game.title} style={{ width: '300px' }} />
-            <p>Avaliação: {game.rating}</p>
+            <p>Avaliação: {game.rating}⭐</p>
             <p>{game.description}</p>
           </>
         ) : (

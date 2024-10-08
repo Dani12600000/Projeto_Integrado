@@ -71,7 +71,7 @@ const Home = () => {
               games.map(game => (
                 <div key={game._id} className="game-item m-3 text-center">
                   <h3>{game.title}</h3>
-                  <p>Avaliação: {game.rating}</p>
+                  <p>Avaliação: {game.rating}⭐</p>
                   <Link to={`/game/${game._id}`}>
                     <img src={game.image} alt={game.title} style={{ width: '100px' }} />
                     <p>Ver detalhes</p>
