@@ -19,7 +19,9 @@ const Home = () => {
     const fetchGames = async () => {
       try {
         const response = await axios.get('http://localhost:3001/games'); // Rota que retorna os jogos
-        setGames(response.data); // Seta os jogos vindos da API no estado
+        // Ordena os jogos pela avaliação antes de definir o estado
+        const sortedGames = response.data.sort((a, b) => b.rating - a.rating);
+        setGames(sortedGames); // Seta os jogos ordenados no estado
         setLoading(false); // Desativa o estado de carregamento
       } catch (error) {
         console.error('Erro ao buscar jogos:', error);
