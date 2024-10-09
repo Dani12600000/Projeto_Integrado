@@ -118,7 +118,7 @@ const GameDetails = () => {
             <img src={game.image} alt={game.title} style={{ width: "300px" }} />
             <p>Avaliação: {game.rating}⭐</p>
             <p>{game.description}</p>
-            <p>{game.ano}</p>
+            <p>{game.year}</p>
             {userId && ( // Mostrar botão de favoritar apenas para usuários logados
               <button
                 className={`btn ${isFavorited ? "btn-danger" : "btn-success"}`}
