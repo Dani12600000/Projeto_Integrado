@@ -76,10 +76,10 @@ app.get("/games/:id", (req, res) => {
 
 // Rota para adicionar um novo jogo
 app.post("/games", (req, res) => {
-  const { title, rating, image, description } = req.body;
+  const { title, rating, image, description, ano } = req.body;
 
   // Verifica se todos os campos estão preenchidos
-  if (!title || !rating || !image || !description) {
+  if (!title || !rating || !image || !description || !ano) {
     return res
       .status(400)
       .json({ message: "Todos os campos são obrigatórios." });

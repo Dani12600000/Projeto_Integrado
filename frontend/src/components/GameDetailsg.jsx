@@ -73,7 +73,8 @@ const GameDetails = () => {
     <div
       style={{
         backgroundImage: "linear-gradient(#00d5ff,#0095ff,rgba(93,0,255,.555))",
-        height: "100vh",
+        minHeight: "100vh", // O elemento terá pelo menos a altura da janela
+        height: "auto", // Permite que o elemento cresça se o conteúdo ultrapassar 100vh
       }}
       className="d-flex flex-column"
     >
@@ -117,9 +118,10 @@ const GameDetails = () => {
             <img src={game.image} alt={game.title} style={{ width: "300px" }} />
             <p>Avaliação: {game.rating}⭐</p>
             <p>{game.description}</p>
+            <p>{game.ano}</p>
             {userId && ( // Mostrar botão de favoritar apenas para usuários logados
               <button
-                className={`btn ${isFavorited ? "btn-danger" : "btn-primary"}`}
+                className={`btn ${isFavorited ? "btn-danger" : "btn-success"}`}
                 onClick={handleFavoriteToggle}
               >
                 {isFavorited
@@ -132,6 +134,7 @@ const GameDetails = () => {
           <p>Jogo não encontrado.</p>
         )}
       </main>
+      <br />
     </div>
   );
 };

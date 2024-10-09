@@ -1,5 +1,5 @@
 // models/Game.js
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 // Definir o esquema do jogo
 const GameSchema = new mongoose.Schema({
@@ -19,9 +19,13 @@ const GameSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  ano: {
+    type: Number,
+    required: true,
+  },
 });
 
 // Criar o modelo Game com base no esquema
-const GameModel = mongoose.model('Game', GameSchema);
+const GameModel = mongoose.model("Game", GameSchema);
 
 module.exports = GameModel;
