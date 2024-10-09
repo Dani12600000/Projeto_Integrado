@@ -62,9 +62,16 @@ const Profile = () => {
         <div>
           {userName ? (
             <>
-              <button className="btn btn-light" onClick={handleLogout}>
-                Logout
-              </button>
+              <div className="d-flex justify-content-between align-items-center">
+                {userName === "Admin" && (
+                  <Link to="/addgame" className="btn btn-warning me-2">
+                    Add Game
+                  </Link>
+                )}
+                <button className="btn btn-light" onClick={handleLogout}>
+                  Logout
+                </button>
+              </div>
             </>
           ) : (
             <>
