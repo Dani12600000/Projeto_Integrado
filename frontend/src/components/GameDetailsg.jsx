@@ -73,8 +73,8 @@ const GameDetails = () => {
     <div
       style={{
         backgroundImage: "linear-gradient(#00d5ff,#0095ff,rgba(93,0,255,.555))",
-        minHeight: "100vh", // O elemento terá pelo menos a altura da janela
-        height: "auto", // Permite que o elemento cresça se o conteúdo ultrapassar 100vh
+        minHeight: "100vh",
+        height: "auto",
       }}
       className="d-flex flex-column"
     >
@@ -91,7 +91,10 @@ const GameDetails = () => {
         <div>
           {userName ? (
             <>
-              <span className="text-light me-3">Welcome, {userName}</span>
+              <span className="text-light me-3">Olá, {userName}</span>
+              <Link to="/Profile" className="btn btn-primary me-2">
+                Perfil
+              </Link>
               <button className="btn btn-light" onClick={handleLogout}>
                 Logout
               </button>
@@ -109,27 +112,42 @@ const GameDetails = () => {
         </div>
       </header>
 
-      <main className="d-flex flex-column align-items-center justify-content-center flex-grow-1 text-center">
+      <main className="d-flex justify-content-center align-items-start flex-grow-1">
         {loading ? (
           <p>Carregando detalhes do jogo...</p>
         ) : game ? (
-          <>
-            <h1>{game.title}</h1>
-            <img src={game.image} alt={game.title} style={{ width: "300px" }} />
-            <p>Avaliação: {game.rating}⭐</p>
-            <p>{game.description}</p>
-            <p>{game.year}</p>
-            {userId && ( // Mostrar botão de favoritar apenas para usuários logados
-              <button
-                className={`btn ${isFavorited ? "btn-danger" : "btn-success"}`}
-                onClick={handleFavoriteToggle}
-              >
-                {isFavorited
-                  ? "Remover dos Favoritos"
-                  : "Adicionar aos Favoritos"}
-              </button>
-            )}
-          </>
+          <div className="d-flex">
+            {/* Lado esquerdo: Imagem do jogo, título e ano */}
+            <div className="me-5 text-center">
+              <img
+                src={game.image}
+                alt={game.title}
+                style={{ width: "300px" }}
+              />
+              <h2>{game.title}</h2>
+              <p>Ano: {game.year}</p>
+            </div>
+            {/* Lado direito: Descrição e botão de favoritar */}
+            <div className="text-start">
+              <p>{game.description}</p>
+              <p>Avaliação: {game.rating}⭐</p>
+              {game.categories && (
+                <p>Categorias: {game.categories.join(", ")}</p>
+              )}
+              {userId && ( // Mostrar botão de favoritar apenas para usuários logados
+                <button
+                  className={`btn ${
+                    isFavorited ? "btn-danger" : "btn-success"
+                  }`}
+                  onClick={handleFavoriteToggle}
+                >
+                  {isFavorited
+                    ? "Remover dos Favoritos"
+                    : "Adicionar aos Favoritos"}
+                </button>
+              )}
+            </div>
+          </div>
         ) : (
           <p>Jogo não encontrado.</p>
         )}

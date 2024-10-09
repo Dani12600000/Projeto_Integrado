@@ -76,7 +76,10 @@ const Home = () => {
         <div>
           {userName ? (
             <>
-              <span className="text-light me-3">Welcome, {userName}</span>
+              <span className="text-light me-3">Olá, {userName}</span>
+              <Link to="/Profile" className="btn btn-primary me-2">
+                Perfil
+              </Link>
               <button className="btn btn-light" onClick={handleLogout}>
                 Logout
               </button>
