@@ -117,7 +117,6 @@ const Home = () => {
                 <div key={game._id} className="game-item m-3 text-center">
                   <h3>{game.title}</h3>
                   <p>Avaliação: {game.rating}⭐</p>
-                  <p>Favoritos: {game.favoriteCount}</p>
                   <Link to={`/game/${game._id}`}>
                     <img
                       src={game.image}
@@ -126,6 +125,7 @@ const Home = () => {
                     />
                     <p>Ver detalhes</p>
                   </Link>
+                  <p>Favoritos: {game.favoriteCount}</p>
                 </div>
               ))
             ) : (
