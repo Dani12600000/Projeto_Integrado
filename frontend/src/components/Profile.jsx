@@ -28,7 +28,33 @@ const Profile = () => {
       const response = await axios.get(
         `http://localhost:3001/favorites/${userId}`
       );
-      setFavoriteGames(response.data); // Seta os jogos favoritados
+      const gamesWithRatings = await Promise.all(
+        response.data.map(async (game) => {
+          // Para cada jogo, busca as avaliações
+          const reviewsResponse = await axios.get(
+            `http://localhost:3001/games/${game._id}`
+          );
+          const reviews = reviewsResponse.data.reviews;
+
+          // Calcular a média das avaliações
+          const ratings = reviews.map((review) => review.rating);
+          const averageRating = ratings.length
+            ? (ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(1)
+            : 0;
+
+          // Busca a avaliação do usuário
+          const userReview = reviews.find((rev) => rev.userId === userId);
+          const userRating = userReview ? userReview.rating : 0;
+
+          return {
+            ...game,
+            averageRating, // Média das avaliações
+            rating: reviewsResponse.data.rating, // Obtém o valor do rating do jogo
+            userRating, // Avaliação do usuário
+          };
+        })
+      );
+      setFavoriteGames(gamesWithRatings); // Seta todos os jogos favoritados com suas avaliações
     } catch (error) {
       console.error("Erro ao buscar jogos favoritados:", error);
     }
@@ -99,7 +125,14 @@ const Profile = () => {
                   alt={game.title}
                   style={{ width: "100px" }}
                 />
-                <p>Avaliação: {game.rating}⭐</p>
+                <p>
+                  Avaliação:{" "}
+                  {game.averageRating > 0 ? game.averageRating : game.rating}⭐
+                </p>
+                <p>
+                  Sua Avaliação:{" "}
+                  {game.userRating > 0 ? game.userRating : "Não Avaliado"}
+                </p>
                 <Link to={`/game/${game._id}`} className="btn btn-info">
                   Ver detalhes
                 </Link>

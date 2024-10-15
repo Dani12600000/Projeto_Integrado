@@ -22,7 +22,19 @@ const Home = () => {
       try {
         const response = await axios.get("http://localhost:3001/games"); // Rota que retorna os jogos
         // Ordena os jogos pela avaliação antes de definir o estado
-        const sortedGames = response.data.sort((a, b) => b.rating - a.rating);
+        const sortedGames = response.data
+          .map((game) => {
+            const ratings = game.reviews.map((review) => review.rating);
+            const averageRating =
+              ratings.length > 0
+                ? (ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(
+                    1
+                  )
+                : game.rating; // Usa a rating padrão se não houver avaliações
+            return { ...game, averageRating }; // Adiciona a média ao jogo
+          })
+          .sort((a, b) => b.averageRating - a.averageRating);
+
         setGames(sortedGames); // Seta os jogos ordenados no estado
         setFilteredGames(sortedGames); // Seta os jogos filtrados inicialmente como todos os jogos
         setLoading(false); // Desativa o estado de carregamento
@@ -116,7 +128,8 @@ const Home = () => {
               filteredGames.map((game) => (
                 <div key={game._id} className="game-item m-3 text-center">
                   <h3>{game.title}</h3>
-                  <p>Avaliação: {game.rating}⭐</p>
+                  <p>Avaliação: {game.averageRating}⭐</p>{" "}
+                  {/* Exibe a média ou a rating padrão */}
                   <Link to={`/game/${game._id}`}>
                     <img
                       src={game.image}

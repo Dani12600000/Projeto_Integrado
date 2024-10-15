@@ -9,6 +9,10 @@ const GameDetails = () => {
   const [userName, setUserName] = useState("");
   const [userId, setUserId] = useState("");
   const [isFavorited, setIsFavorited] = useState(false); // Controle para verificar se o jogo é favorito
+  const [rating, setRating] = useState(0); // Avaliação do jogo
+  const [comment, setComment] = useState(""); // Comentário do jogo
+  const [userReview, setUserReview] = useState(null); // Avaliação existente do usuário
+  const [averageRating, setAverageRating] = useState(null); // Média das avaliações
   const navigate = useNavigate();
 
   // Função para buscar detalhes do jogo
@@ -16,6 +20,15 @@ const GameDetails = () => {
     try {
       const response = await axios.get(`http://localhost:3001/games/${gameId}`);
       setGame(response.data);
+
+      // Calcular a média das avaliações
+      const ratings = response.data.reviews.map((review) => review.rating);
+      if (ratings.length > 0) {
+        const average = ratings.reduce((a, b) => a + b, 0) / ratings.length;
+        setAverageRating(average.toFixed(1)); // Armazena a média com uma casa decimal
+      } else {
+        setAverageRating(0); // Se não houver avaliações, define a média como 0
+      }
     } catch (error) {
       console.error("Erro ao buscar detalhes do jogo:", error);
     } finally {
@@ -37,6 +50,22 @@ const GameDetails = () => {
     }
   };
 
+  // Função para buscar a avaliação do usuário
+  const fetchUserReview = async (gameId, userId) => {
+    try {
+      const response = await axios.get(`http://localhost:3001/games/${gameId}`);
+      const reviews = response.data.reviews;
+      const review = reviews.find((rev) => rev.userId === userId);
+      if (review) {
+        setUserReview(review);
+        setRating(review.rating); // Mostra a avaliação existente
+        setComment(review.comment); // Mostra o comentário existente
+      }
+    } catch (error) {
+      console.error("Erro ao buscar avaliação do usuário:", error);
+    }
+  };
+
   // Função para adicionar ou remover um jogo dos favoritos
   const handleFavoriteToggle = async () => {
     try {
@@ -50,6 +79,28 @@ const GameDetails = () => {
     }
   };
 
+  // Função para enviar avaliação
+  const handleReviewSubmit = async () => {
+    try {
+      await axios.post(`http://localhost:3001/games/${id}/review`, {
+        userId,
+        rating,
+        comment,
+      });
+
+      fetchGameDetails(id); // Atualiza os detalhes do jogo após avaliar
+
+      // Atualiza o estado userReview com a nova avaliação
+      setUserReview({
+        userId,
+        rating,
+        comment,
+      });
+    } catch (error) {
+      console.error("Erro ao enviar avaliação:", error);
+    }
+  };
+
   useEffect(() => {
     const storedUserName = localStorage.getItem("userName");
     const storedUserId = localStorage.getItem("userId");
@@ -59,6 +110,7 @@ const GameDetails = () => {
     if (storedUserId) {
       setUserId(storedUserId); // Seta o ID do utilizador
       checkIfFavorited(id, storedUserId); // Verifica se o jogo já é favorito
+      fetchUserReview(id, storedUserId); // Busca a avaliação do usuário para o jogo
     }
     fetchGameDetails(id); // Busca os detalhes do jogo usando o ID
   }, [id]);
@@ -127,24 +179,60 @@ const GameDetails = () => {
               <h2>{game.title}</h2>
               <p>Ano: {game.year}</p>
             </div>
-            {/* Lado direito: Descrição e botão de favoritar */}
+            {/* Lado direito: Descrição, favoritos e avaliação */}
             <div className="text-start">
               <p>{game.description}</p>
-              <p>Avaliação: {game.rating}⭐</p>
+              <p>
+                Avaliação Geral:{" "}
+                {averageRating !== 0 ? averageRating : game.rating} ⭐
+              </p>
               {game.categories && (
                 <p>Categorias: {game.categories.join(", ")}</p>
               )}
               {userId && ( // Mostrar botão de favoritar apenas para utilizadores logados
-                <button
-                  className={`btn ${
-                    isFavorited ? "btn-danger" : "btn-success"
-                  }`}
-                  onClick={handleFavoriteToggle}
-                >
-                  {isFavorited
-                    ? "Remover dos Favoritos"
-                    : "Adicionar aos Favoritos"}
-                </button>
+                <>
+                  <button
+                    className={`btn ${
+                      isFavorited ? "btn-danger" : "btn-success"
+                    }`}
+                    onClick={handleFavoriteToggle}
+                  >
+                    {isFavorited
+                      ? "Remover dos Favoritos"
+                      : "Adicionar aos Favoritos"}
+                  </button>
+                  <br />
+                  <br />
+                  {/* Seção de Avaliação */}
+                  <h3>Sua Avaliação</h3>
+                  <label>Avaliação:</label>
+                  <select
+                    value={rating}
+                    onChange={(e) => setRating(Number(e.target.value))}
+                  >
+                    <option value="0">Selecione</option>
+                    <option value="1">1 Estrela</option>
+                    <option value="2">2 Estrelas</option>
+                    <option value="3">3 Estrelas</option>
+                    <option value="4">4 Estrelas</option>
+                    <option value="5">5 Estrelas</option>
+                  </select>
+                  <br />
+                  <label>Comentário:</label>
+                  <textarea
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    rows="3"
+                    className="form-control"
+                  />
+                  <br />
+                  <button
+                    className="btn btn-primary"
+                    onClick={handleReviewSubmit}
+                  >
+                    {userReview ? "Atualizar Avaliação" : "Enviar Avaliação"}
+                  </button>
+                </>
               )}
             </div>
           </div>

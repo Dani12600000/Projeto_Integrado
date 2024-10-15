@@ -155,6 +155,48 @@ app.get("/favorites/:userId", (req, res) => {
     );
 });
 
+// Rota para adicionar ou atualizar avaliação de um jogo
+app.post("/games/:id/review", (req, res) => {
+  const { userId, rating, comment } = req.body; // Dados da avaliação
+  const gameId = req.params.id;
+
+  // Verifica se a avaliação tem os dados necessários
+  if (!userId || !rating) {
+    return res
+      .status(400)
+      .json({ message: "Usuário e avaliação são obrigatórios." });
+  }
+
+  GameModel.findById(gameId)
+    .then((game) => {
+      if (!game) {
+        return res.status(404).json({ message: "Jogo não encontrado." });
+      }
+
+      // Verifica se o usuário já avaliou o jogo
+      const existingReviewIndex = game.reviews.findIndex(
+        (review) => review.userId.toString() === userId
+      );
+
+      if (existingReviewIndex !== -1) {
+        // Se o usuário já tiver uma avaliação, atualiza
+        game.reviews[existingReviewIndex].rating = rating;
+        game.reviews[existingReviewIndex].comment = comment || "";
+      } else {
+        // Caso contrário, adiciona uma nova avaliação
+        game.reviews.push({ userId, rating, comment });
+      }
+
+      return game.save(); // Salva as mudanças no jogo
+    })
+    .then((updatedGame) => res.json(updatedGame)) // Retorna o jogo atualizado
+    .catch((error) =>
+      res
+        .status(500)
+        .json({ message: "Erro ao adicionar ou atualizar avaliação.", error })
+    );
+});
+
 // Inicia o servidor na porta 3001
 app.listen(3001, () => {
   console.log("Server listening on http://localhost:3001");
