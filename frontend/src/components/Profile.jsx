@@ -42,7 +42,7 @@ const Profile = () => {
             ? (ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(1)
             : 0;
 
-          // Busca a avaliação do usuário
+          // Busca a avaliação do utilizador
           const userReview = reviews.find((rev) => rev.userId === userId);
           const userRating = userReview ? userReview.rating : 0;
 
@@ -50,7 +50,7 @@ const Profile = () => {
             ...game,
             averageRating, // Média das avaliações
             rating: reviewsResponse.data.rating, // Obtém o valor do rating do jogo
-            userRating, // Avaliação do usuário
+            userRating, // Avaliação do utilizador
           };
         })
       );

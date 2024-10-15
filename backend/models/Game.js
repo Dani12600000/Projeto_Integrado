@@ -13,7 +13,7 @@ const gameSchema = new mongoose.Schema({
       rating: Number,
       comment: String,
     },
-  ], // Array para armazenar avaliações de diferentes usuários
+  ], // Array para armazenar avaliações de diferentes utilizadores
 });
 
 const GameModel = mongoose.model("Game", gameSchema);

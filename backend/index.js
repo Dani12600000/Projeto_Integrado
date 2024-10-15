@@ -164,7 +164,7 @@ app.post("/games/:id/review", (req, res) => {
   if (!userId || !rating) {
     return res
       .status(400)
-      .json({ message: "Usuário e avaliação são obrigatórios." });
+      .json({ message: "utilizador e avaliação são obrigatórios." });
   }
 
   GameModel.findById(gameId)
@@ -173,13 +173,13 @@ app.post("/games/:id/review", (req, res) => {
         return res.status(404).json({ message: "Jogo não encontrado." });
       }
 
-      // Verifica se o usuário já avaliou o jogo
+      // Verifica se o utilizador já avaliou o jogo
       const existingReviewIndex = game.reviews.findIndex(
         (review) => review.userId.toString() === userId
       );
 
       if (existingReviewIndex !== -1) {
-        // Se o usuário já tiver uma avaliação, atualiza
+        // Se o utilizador já tiver uma avaliação, atualiza
         game.reviews[existingReviewIndex].rating = rating;
         game.reviews[existingReviewIndex].comment = comment || "";
       } else {

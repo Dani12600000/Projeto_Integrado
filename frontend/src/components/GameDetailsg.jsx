@@ -11,7 +11,7 @@ const GameDetails = () => {
   const [isFavorited, setIsFavorited] = useState(false); // Controle para verificar se o jogo é favorito
   const [rating, setRating] = useState(0); // Avaliação do jogo
   const [comment, setComment] = useState(""); // Comentário do jogo
-  const [userReview, setUserReview] = useState(null); // Avaliação existente do usuário
+  const [userReview, setUserReview] = useState(null); // Avaliação existente do utilizador
   const [averageRating, setAverageRating] = useState(null); // Média das avaliações
   const navigate = useNavigate();
 
@@ -50,7 +50,7 @@ const GameDetails = () => {
     }
   };
 
-  // Função para buscar a avaliação do usuário
+  // Função para buscar a avaliação do utilizador
   const fetchUserReview = async (gameId, userId) => {
     try {
       const response = await axios.get(`http://localhost:3001/games/${gameId}`);
@@ -62,7 +62,7 @@ const GameDetails = () => {
         setComment(review.comment); // Mostra o comentário existente
       }
     } catch (error) {
-      console.error("Erro ao buscar avaliação do usuário:", error);
+      console.error("Erro ao buscar avaliação do utilizador:", error);
     }
   };
 
@@ -110,7 +110,7 @@ const GameDetails = () => {
     if (storedUserId) {
       setUserId(storedUserId); // Seta o ID do utilizador
       checkIfFavorited(id, storedUserId); // Verifica se o jogo já é favorito
-      fetchUserReview(id, storedUserId); // Busca a avaliação do usuário para o jogo
+      fetchUserReview(id, storedUserId); // Busca a avaliação do utilizador para o jogo
     }
     fetchGameDetails(id); // Busca os detalhes do jogo usando o ID
   }, [id]);
