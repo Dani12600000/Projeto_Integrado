@@ -90,7 +90,7 @@ const AddGame = () => {
         <div>
           <Link to="/">
             <img
-              src="https://raw.githubusercontent.com/Dani12600000/Projeto_Integrado/refs/heads/main/frontend/DaniLike_Games.jpg"
+              src="https://raw.githubusercontent.com/Dani12600000/Projeto_Integrado/refs/heads/main/frontend/DaniLike_Games.png"
               alt="Logo"
               style={{ height: "50px" }}
             />
