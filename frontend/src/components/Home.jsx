@@ -11,7 +11,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Verifica se o usuário está logado e obtém o nome do usuário do localStorage
+    // Verifica se o utilizador está logado e obtém o nome do utilizador do localStorage
     const name = localStorage.getItem("userName");
     if (name) {
       setUserName(name); // Seta o nome do utilizador
@@ -48,9 +48,9 @@ const Home = () => {
   }, [searchTerm, games]);
 
   const handleLogout = () => {
-    // Limpa os dados do usuário do localStorage
-    localStorage.removeItem("userId"); // Limpa o ID do usuário
-    localStorage.removeItem("userName"); // Limpa o nome do usuário
+    // Limpa os dados do utilizador do localStorage
+    localStorage.removeItem("userId"); // Limpa o ID do utilizador
+    localStorage.removeItem("userName"); // Limpa o nome do utilizador
     navigate("/login");
   };
 
@@ -117,6 +117,7 @@ const Home = () => {
                 <div key={game._id} className="game-item m-3 text-center">
                   <h3>{game.title}</h3>
                   <p>Avaliação: {game.rating}⭐</p>
+                  <p>Favoritos: {game.favoriteCount}</p>
                   <Link to={`/game/${game._id}`}>
                     <img
                       src={game.image}

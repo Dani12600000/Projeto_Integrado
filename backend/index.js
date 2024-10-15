@@ -36,7 +36,7 @@ app.post("/login", (req, res) => {
   FormDataModel.findOne({ email: email }).then((user) => {
     if (user) {
       if (user.password === password) {
-        // Enviar sucesso junto com o ID e nome do usuário
+        // Enviar sucesso junto com o ID e nome do utilizador
         res.json({ status: "Success", id: user._id, name: user.name });
       } else {
         res.json({ status: "Wrong password" });
@@ -47,13 +47,30 @@ app.post("/login", (req, res) => {
   });
 });
 
-// Rota para buscar todos os jogos
-app.get("/games", (req, res) => {
-  GameModel.find()
-    .then((games) => res.json(games)) // Retorna a lista de jogos
-    .catch((error) =>
-      res.status(500).json({ message: "Erro ao buscar jogos", error })
+// Rota para buscar todos os jogos com o número de favoritos de cada um
+app.get("/games", async (req, res) => {
+  try {
+    // Busca todos os jogos
+    const games = await GameModel.find();
+
+    // Para cada jogo, conta o número de utilizadors que o favoritaram
+    const gamesWithFavoriteCounts = await Promise.all(
+      games.map(async (game) => {
+        const count = await FormDataModel.countDocuments({
+          favorites: game._id, // Conta quantos utilizadors têm esse jogo nos favoritos
+        });
+        return {
+          ...game.toObject(), // Converte o documento do jogo em objeto JS
+          favoriteCount: count, // Adiciona a contagem de favoritos
+        };
+      })
     );
+
+    // Retorna os jogos com a contagem de favoritos
+    res.json(gamesWithFavoriteCounts);
+  } catch (error) {
+    res.status(500).json({ message: "Erro ao buscar jogos", error });
+  }
 });
 
 // Rota para buscar os detalhes de um jogo pelo ID
@@ -100,7 +117,7 @@ app.post("/favorites", (req, res) => {
   FormDataModel.findById(userId)
     .then((user) => {
       if (!user) {
-        return res.status(404).json({ message: "Usuário não encontrado." });
+        return res.status(404).json({ message: "utilizador não encontrado." });
       }
 
       // Verifica se o jogo já está nos favoritos
@@ -121,7 +138,7 @@ app.post("/favorites", (req, res) => {
     );
 });
 
-// Rota para buscar jogos favoritos do usuário
+// Rota para buscar jogos favoritos do utilizador
 app.get("/favorites/:userId", (req, res) => {
   const { userId } = req.params;
 
@@ -129,7 +146,7 @@ app.get("/favorites/:userId", (req, res) => {
     .populate("favorites") // Popula os dados dos jogos favoritos
     .then((user) => {
       if (!user) {
-        return res.status(404).json({ message: "Usuário não encontrado." });
+        return res.status(404).json({ message: "utilizador não encontrado." });
       }
       res.json(user.favorites); // Retorna os jogos favoritos
     })

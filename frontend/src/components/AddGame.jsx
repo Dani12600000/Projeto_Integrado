@@ -14,11 +14,11 @@ const AddGame = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
-  // Verifica se o usuário está logado e obtém o nome do usuário do localStorage
+  // Verifica se o utilizador está logado e obtém o nome do utilizador do localStorage
   useEffect(() => {
     const name = localStorage.getItem("userName");
     if (name) {
-      setUserName(name); // Define o nome do usuário
+      setUserName(name); // Define o nome do utilizador
     }
   }, []);
 

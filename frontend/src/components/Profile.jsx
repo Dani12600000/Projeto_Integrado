@@ -13,7 +13,7 @@ const Profile = () => {
     const storedUserId = localStorage.getItem("userId");
 
     if (!storedUserName || !storedUserId) {
-      // Se o usuário não estiver logado, redireciona para a página inicial
+      // Se o utilizador não estiver logado, redireciona para a página inicial
       navigate("/");
     } else {
       setUserName(storedUserName);

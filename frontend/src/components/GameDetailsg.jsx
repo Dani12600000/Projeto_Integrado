@@ -57,7 +57,7 @@ const GameDetails = () => {
       setUserName(storedUserName);
     }
     if (storedUserId) {
-      setUserId(storedUserId); // Seta o ID do usuário
+      setUserId(storedUserId); // Seta o ID do utilizador
       checkIfFavorited(id, storedUserId); // Verifica se o jogo já é favorito
     }
     fetchGameDetails(id); // Busca os detalhes do jogo usando o ID
@@ -134,7 +134,7 @@ const GameDetails = () => {
               {game.categories && (
                 <p>Categorias: {game.categories.join(", ")}</p>
               )}
-              {userId && ( // Mostrar botão de favoritar apenas para usuários logados
+              {userId && ( // Mostrar botão de favoritar apenas para utilizadores logados
                 <button
                   className={`btn ${
                     isFavorited ? "btn-danger" : "btn-success"
