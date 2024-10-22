@@ -70,7 +70,8 @@ const Home = () => {
     <div
       style={{
         backgroundImage: "linear-gradient(#00d5ff,#0095ff,rgba(93,0,255,.555))",
-        height: "100vh",
+        minHeight: "100vh",
+        height: "auto",
       }}
       className="d-flex flex-column"
     >
@@ -123,27 +124,40 @@ const Home = () => {
         {loading ? (
           <p>Carregando jogos...</p> // Mostra mensagem de carregamento enquanto os dados não chegam
         ) : (
-          <div className="game-list d-flex flex-wrap justify-content-center">
-            {filteredGames.length > 0 ? (
-              filteredGames.map((game) => (
-                <div key={game._id} className="game-item m-3 text-center">
-                  <h3>{game.title}</h3>
-                  <p>Avaliação: {game.averageRating}⭐</p>{" "}
-                  {/* Exibe a média ou a rating padrão */}
-                  <Link to={`/game/${game._id}`}>
-                    <img
-                      src={game.image}
-                      alt={game.title}
-                      style={{ width: "100px" }}
-                    />
-                    <p>Ver detalhes</p>
-                  </Link>
-                  <p>Favoritos: {game.favoriteCount}</p>
-                </div>
-              ))
-            ) : (
-              <p>Nenhum jogo encontrado.</p> // Caso não haja jogos na base de dados
-            )}
+          <div className="container">
+            <div className="row">
+              {filteredGames.length > 0 ? (
+                filteredGames.map((game) => (
+                  <div
+                    key={game._id}
+                    className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4"
+                  >
+                    <div className="card h-100 text-center">
+                      <img
+                        src={game.image}
+                        alt={game.title}
+                        className="card-img-top"
+                        style={{ maxHeight: "200px", objectFit: "cover" }}
+                      />
+                      <div className="card-body">
+                        <h5 className="card-title">{game.title}</h5>
+                        <p className="card-text">
+                          Avaliação: {game.averageRating}⭐
+                        </p>
+                        <p className="card-text">
+                          Favoritos: {game.favoriteCount}
+                        </p>
+                        <Link to={`/game/${game._id}`} className="btn btn-info">
+                          Ver detalhes
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p>Nenhum jogo encontrado.</p> // Caso não haja jogos na base de dados
+              )}
+            </div>
           </div>
         )}
       </section>
