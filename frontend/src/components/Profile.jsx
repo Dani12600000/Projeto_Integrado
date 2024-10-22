@@ -56,7 +56,7 @@ const Profile = () => {
       );
       setFavoriteGames(gamesWithRatings); // Seta todos os jogos favoritados com suas avaliações
     } catch (error) {
-      console.error("Erro ao buscar jogos favoritados:", error);
+      console.error("Erro ao buscar jogos favoritos:", error);
     }
   };
 
@@ -112,7 +112,7 @@ const Profile = () => {
 
       <main className="d-flex flex-column align-items-center justify-content-center flex-grow-1 text-center">
         <h1>Olá, {userName}!</h1>
-        <h2>Jogos Favoritados:</h2>
+        <h2>Jogos Favoritos:</h2>
         {favoriteGames.length > 0 ? (
           <div className="container">
             <div className="row">
