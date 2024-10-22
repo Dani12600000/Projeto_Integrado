@@ -1,6 +1,7 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import StarRating from "./StarRating"; // Importa o componente de avaliação por estrelas
 
 const GameDetails = () => {
   const { id } = useParams(); // ID do jogo
@@ -206,17 +207,8 @@ const GameDetails = () => {
                   {/* Seção de Avaliação */}
                   <h3>Sua Avaliação</h3>
                   <label>Avaliação:</label>
-                  <select
-                    value={rating}
-                    onChange={(e) => setRating(Number(e.target.value))}
-                  >
-                    <option value="0">Selecione</option>
-                    <option value="1">1 Estrela</option>
-                    <option value="2">2 Estrelas</option>
-                    <option value="3">3 Estrelas</option>
-                    <option value="4">4 Estrelas</option>
-                    <option value="5">5 Estrelas</option>
-                  </select>
+                  {/* Avaliação por estrelas */}
+                  <StarRating rating={rating} setRating={setRating} />
                   <br />
                   <label>Comentário:</label>
                   <textarea
