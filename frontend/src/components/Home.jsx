@@ -7,7 +7,7 @@ const Home = () => {
   const [games, setGames] = useState([]); // Armazena os jogos da base de dados
   const [filteredGames, setFilteredGames] = useState([]); // Armazena os jogos filtrados
   const [loading, setLoading] = useState(true); // Controla o carregamento dos dados
-  const [searchTerm, setSearchTerm] = useState(""); // Armazena o termo de busca
+  const [searchTerm, setSearchTerm] = useState(""); // Armazena o termo da procura
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,7 +17,7 @@ const Home = () => {
       setUserName(name); // Seta o nome do utilizador
     }
 
-    // Faz a requisição para buscar os jogos do MongoDB
+    // Faz a requisição para encontrar os jogos do MongoDB
     const fetchGames = async () => {
       try {
         const response = await axios.get("http://localhost:3001/games"); // Rota que retorna os jogos
@@ -39,7 +39,7 @@ const Home = () => {
         setFilteredGames(sortedGames); // Seta os jogos filtrados inicialmente como todos os jogos
         setLoading(false); // Desativa o estado de carregamento
       } catch (error) {
-        console.error("Erro ao buscar jogos:", error);
+        console.error("Erro ao encontrar jogos:", error);
         setLoading(false);
       }
     };
@@ -48,7 +48,7 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    // Filtra os jogos com base no termo de busca
+    // Filtra os jogos com base no termo de procura
     const filtered = games.filter(
       (game) =>
         game.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
