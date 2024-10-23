@@ -137,7 +137,7 @@ const Home = () => {
                         src={game.image}
                         alt={game.title}
                         className="card-img-top"
-                        style={{ maxHeight: "200px", objectFit: "cover" }}
+                        style={{ maxHeight: "250px", objectFit: "cover" }}
                       />
                       <div className="card-body">
                         <h5 className="card-title">{game.title}</h5>
