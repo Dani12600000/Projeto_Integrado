@@ -123,116 +123,142 @@ const GameDetails = () => {
   };
 
   return (
-    <div
-      style={{
-        backgroundImage: "linear-gradient(#00d5ff,#0095ff,rgba(93,0,255,.555))",
-        minHeight: "100vh",
-        height: "auto",
-      }}
-      className="d-flex flex-column"
-    >
-      <header className="d-flex justify-content-between align-items-center p-3">
-        <div>
-          <Link to="/">
-            <img
-              src="https://raw.githubusercontent.com/Dani12600000/Projeto_Integrado/refs/heads/main/frontend/DaniLike_Games.png"
-              alt="Logo"
-              style={{ height: "50px" }}
-            />
-          </Link>
-        </div>
-        <div>
-          {userName ? (
-            <>
-              <span className="text-light me-3">Olá, {userName}</span>
-              <Link to="/Profile" className="btn btn-primary me-2">
-                Perfil
-              </Link>
-              <button className="btn btn-light" onClick={handleLogout}>
-                Logout
-              </button>
-            </>
-          ) : (
-            <>
-              <Link to="/login" className="btn btn-primary me-2">
-                Login
-              </Link>
-              <Link to="/register" className="btn btn-secondary">
-                Register
-              </Link>
-            </>
-          )}
-        </div>
-      </header>
-
-      <main className="d-flex justify-content-center align-items-start flex-grow-1">
-        {loading ? (
-          <p>Carregando detalhes do jogo...</p>
-        ) : game ? (
-          <div className="d-flex">
-            {/* Lado esquerdo: Imagem do jogo, título e ano */}
-            <div className="me-5 text-center">
+    <div style={{ position: "relative", minHeight: "100vh" }}>
+      {/* Camada de fundo com a imagem desfocada */}
+      {game && (
+        <div
+          style={{
+            backgroundImage: `url(${game.image})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            filter: "blur(15px)",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            zIndex: -1,
+          }}
+        />
+      )}
+      {/* Camada de conteúdo */}
+      <div
+        style={{
+          backgroundColor: "rgba(0, 0, 0, 0.6)", // Cor de fundo com transparência
+          minHeight: "100vh",
+          padding: "20px",
+          position: "relative",
+          zIndex: 1,
+        }}
+        className="d-flex flex-column"
+      >
+        <header className="d-flex justify-content-between align-items-center p-3">
+          <div>
+            <Link to="/">
               <img
-                src={game.image}
-                alt={game.title}
-                style={{ width: "300px" }}
+                src="https://raw.githubusercontent.com/Dani12600000/Projeto_Integrado/refs/heads/main/frontend/DaniLike_Games.png"
+                alt="Logo"
+                style={{ height: "50px" }}
               />
-              <h2>{game.title}</h2>
-              <p>Ano: {game.year}</p>
-            </div>
-            {/* Lado direito: Descrição, favoritos e avaliação */}
-            <div className="text-start">
-              <p>{game.description}</p>
-              <p>
-                Avaliação Geral:{" "}
-                {averageRating !== 0 ? averageRating : game.rating} ⭐
-              </p>
-              {game.categories && (
-                <p>Categorias: {game.categories.join(", ")}</p>
-              )}
-              {userId && ( // Mostrar botão de favoritar apenas para utilizadores logados
-                <>
-                  <button
-                    className={`btn ${
-                      isFavorited ? "btn-danger" : "btn-success"
-                    }`}
-                    onClick={handleFavoriteToggle}
-                  >
-                    {isFavorited
-                      ? "Remover dos Favoritos"
-                      : "Adicionar aos Favoritos"}
-                  </button>
-                  <br />
-                  <br />
-                  {/* Seção de Avaliação */}
-                  <h3>Sua Avaliação</h3>
-                  <label>Avaliação:</label>
-                  {/* Avaliação por estrelas */}
-                  <StarRating rating={rating} setRating={setRating} />
-                  <br />
-                  <label>Comentário:</label>
-                  <textarea
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                    rows="3"
-                    className="form-control"
-                  />
-                  <br />
-                  <button
-                    className="btn btn-primary"
-                    onClick={handleReviewSubmit}
-                  >
-                    {userReview ? "Atualizar Avaliação" : "Enviar Avaliação"}
-                  </button>
-                </>
-              )}
-            </div>
+            </Link>
           </div>
-        ) : (
-          <p>Jogo não encontrado.</p>
-        )}
-      </main>
-      <br />
+          <div>
+            {userName ? (
+              <>
+                <span className="text-light me-3">Olá, {userName}</span>
+                <Link to="/Profile" className="btn btn-primary me-2">
+                  Perfil
+                </Link>
+                <button className="btn btn-light" onClick={handleLogout}>
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="btn btn-primary me-2">
+                  Login
+                </Link>
+                <Link to="/register" className="btn btn-secondary">
+                  Register
+                </Link>
+              </>
+            )}
+          </div>
+        </header>
+
+        <main className="d-flex justify-content-center align-items-start flex-grow-1">
+          {loading ? (
+            <p className="text-light">Carregando detalhes do jogo...</p>
+          ) : game ? (
+            <div className="d-flex text-light">
+              {/* Lado esquerdo: Imagem do jogo, título e ano */}
+              <div className="me-5 text-center">
+                <img
+                  src={game.image}
+                  alt={game.title}
+                  style={{
+                    width: "300px",
+                    boxShadow: "0 4px 15px rgba(0, 0, 0, 0.5)", // Adiciona a sombra
+                    borderRadius: "8px", // Adiciona bordas arredondadas, se desejar
+                  }}
+                />
+                <h2>{game.title}</h2>
+                <p>Ano: {game.year}</p>
+              </div>
+              {/* Lado direito: Descrição, favoritos e avaliação */}
+              <div className="text-start">
+                <p>{game.description}</p>
+                <p>
+                  Avaliação Geral:{" "}
+                  {averageRating !== 0 ? averageRating : game.rating} ⭐
+                </p>
+                {game.categories && (
+                  <p>Categorias: {game.categories.join(", ")}</p>
+                )}
+                {userId && ( // Mostrar botão de favoritar apenas para utilizadores logados
+                  <>
+                    <button
+                      className={`btn ${
+                        isFavorited ? "btn-danger" : "btn-success"
+                      }`}
+                      onClick={handleFavoriteToggle}
+                    >
+                      {isFavorited
+                        ? "Remover dos Favoritos"
+                        : "Adicionar aos Favoritos"}
+                    </button>
+                    <br />
+                    <br />
+                    {/* Seção de Avaliação */}
+                    <h3>Sua Avaliação</h3>
+                    <label>Avaliação:</label>
+                    {/* Avaliação por estrelas */}
+                    <StarRating rating={rating} setRating={setRating} />
+                    <br />
+                    <label>Comentário:</label>
+                    <textarea
+                      value={comment}
+                      onChange={(e) => setComment(e.target.value)}
+                      rows="3"
+                      className="form-control"
+                    />
+                    <br />
+                    <button
+                      className="btn btn-primary"
+                      onClick={handleReviewSubmit}
+                    >
+                      {userReview ? "Atualizar Avaliação" : "Enviar Avaliação"}
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+          ) : (
+            <p>Jogo não encontrado.</p>
+          )}
+        </main>
+        <br />
+      </div>
     </div>
   );
 };
