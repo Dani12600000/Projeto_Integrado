@@ -198,7 +198,7 @@ const GameDetails = () => {
                   alt={game.title}
                   style={{
                     width: "300px",
-                    boxShadow: "0 4px 15px rgba(0, 0, 0, 0.5)", // Adiciona a sombra
+                    boxShadow: "0 4px 15px rgba(0, 0, 0, 0.75)", // Adiciona a sombra
                     borderRadius: "8px", // Adiciona bordas arredondadas, se desejar
                   }}
                 />
