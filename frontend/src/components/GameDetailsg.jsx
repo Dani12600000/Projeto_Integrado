@@ -14,6 +14,7 @@ const GameDetails = () => {
   const [comment, setComment] = useState(""); // Comentário do jogo
   const [userReview, setUserReview] = useState(null); // Avaliação existente do utilizador
   const [averageRating, setAverageRating] = useState(null); // Média das avaliações
+  const [reviews, setReviews] = useState([]); // Comentários e avaliações dos outros jogadores
   const navigate = useNavigate();
 
   // Função para buscar detalhes do jogo
@@ -21,6 +22,8 @@ const GameDetails = () => {
     try {
       const response = await axios.get(`http://localhost:3001/games/${gameId}`);
       setGame(response.data);
+      setReviews(response.data.reviews); // Armazena as avaliações
+      console.log("Reviews recebidas:", response.data.reviews); // Log para verificar
 
       // Calcular a média das avaliações
       const ratings = response.data.reviews.map((review) => review.rating);
@@ -257,7 +260,27 @@ const GameDetails = () => {
             <p>Jogo não encontrado.</p>
           )}
         </main>
-        <br />
+
+        {/* Seção de Comentários */}
+        <div
+          style={{
+            backgroundColor: "rgba(255, 255, 255, 0.8)",
+            borderRadius: "10px",
+            padding: "15px",
+            marginTop: "20px", // Para dar um espaço abaixo da avaliação do usuário
+          }}
+        >
+          <h4>Comentários:</h4>
+          {reviews.length > 0 ? (
+            reviews.map((review, index) => (
+              <div key={index} style={{ marginBottom: "10px" }}>
+                {review.comment} - {review.rating} ⭐
+              </div>
+            ))
+          ) : (
+            <p>Nenhum comentário ainda.</p>
+          )}
+        </div>
       </div>
     </div>
   );
