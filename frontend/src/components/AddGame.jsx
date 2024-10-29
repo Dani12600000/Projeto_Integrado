@@ -81,7 +81,7 @@ const AddGame = () => {
   return (
     <div
       style={{
-        backgroundImage: "linear-gradient(#00d5ff,#0095ff,rgba(93,0,255,.555))",
+        backgroundImage: "linear-gradient(135deg, #1b2838, #1c3a54, #2a475e)",
         height: "100vh",
       }}
       className="d-flex flex-column"
@@ -118,7 +118,7 @@ const AddGame = () => {
       </header>
 
       <main className="d-flex flex-column align-items-center justify-content-center flex-grow-1 text-center">
-        <h2>Adicionar Novo Jogo</h2>
+        <h2 className="text-white">Adicionar Novo Jogo</h2>
         {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
         <form
           onSubmit={handleAddGame}

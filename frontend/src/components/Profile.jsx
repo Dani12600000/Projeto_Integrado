@@ -69,7 +69,7 @@ const Profile = () => {
   return (
     <div
       style={{
-        backgroundImage: "linear-gradient(#00d5ff,#0095ff,rgba(93,0,255,.555))",
+        backgroundImage: "linear-gradient(135deg, #1b2838, #1c3a54, #2a475e)",
         minHeight: "100vh",
         height: "auto",
       }}
@@ -111,8 +111,8 @@ const Profile = () => {
       </header>
 
       <main className="d-flex flex-column align-items-center justify-content-center flex-grow-1 text-center">
-        <h1>Olá, {userName}!</h1>
-        <h2>Jogos Favoritos:</h2>
+        <h1 className="text-white">Olá, {userName}!</h1>
+        <h2 className="text-white">Jogos Favoritos:</h2>
         {favoriteGames.length > 0 ? (
           <div className="container">
             <div className="row">
