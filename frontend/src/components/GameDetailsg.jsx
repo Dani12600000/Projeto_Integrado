@@ -267,7 +267,7 @@ const GameDetails = () => {
             backgroundColor: "rgba(255, 255, 255, 0.8)",
             borderRadius: "10px",
             padding: "15px",
-            marginTop: "20px", // Para dar um espaço abaixo da avaliação do usuário
+            marginTop: "20px", // Para dar um espaço abaixo da avaliação do utilizador
           }}
         >
           <h4>Comentários:</h4>
