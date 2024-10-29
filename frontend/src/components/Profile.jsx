@@ -151,7 +151,7 @@ const Profile = () => {
             </div>
           </div>
         ) : (
-          <p>Você ainda não tem jogos favoritados.</p>
+          <p>Você ainda não tem jogos favoritos.</p>
         )}
       </main>
       <br />
