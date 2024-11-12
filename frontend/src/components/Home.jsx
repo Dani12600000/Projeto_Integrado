@@ -82,7 +82,7 @@ const Home = () => {
             <img
               src="https://raw.githubusercontent.com/Dani12600000/Projeto_Integrado/refs/heads/main/frontend/DaniLike_Games.png"
               alt="Logo"
-              style={{ height: "50px" }}
+              style={{ height: "85px" }}
             />
           </Link>
         </div>
@@ -94,16 +94,16 @@ const Home = () => {
                 Perfil
               </Link>
               <button className="btn btn-light" onClick={handleLogout}>
-                Logout
+                Sair
               </button>
             </>
           ) : (
             <>
               <Link to="/login" className="btn btn-primary me-2">
-                Login
+                Iniciar Sessão
               </Link>
               <Link to="/register" className="btn btn-secondary">
-                Register
+                Criar conta
               </Link>
             </>
           )}

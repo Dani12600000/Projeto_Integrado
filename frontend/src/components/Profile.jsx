@@ -81,7 +81,7 @@ const Profile = () => {
             <img
               src="https://raw.githubusercontent.com/Dani12600000/Projeto_Integrado/refs/heads/main/frontend/DaniLike_Games.png"
               alt="Logo"
-              style={{ height: "50px" }}
+              style={{ height: "85px" }}
             />
           </Link>
         </div>
@@ -90,11 +90,11 @@ const Profile = () => {
             <div className="d-flex justify-content-between align-items-center">
               {userName === "Admin" && (
                 <Link to="/addgame" className="btn btn-warning me-2">
-                  Add Game
+                  Adicionar Jogo
                 </Link>
               )}
               <button className="btn btn-light" onClick={handleLogout}>
-                Logout
+                Sair
               </button>
             </div>
           ) : (

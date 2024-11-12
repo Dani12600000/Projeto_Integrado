@@ -25,10 +25,12 @@ const Register = () => {
       .then((result) => {
         console.log(result);
         if (result.data === "Already registered") {
-          alert("E-mail already registered! Please Login to proceed.");
+          alert("E-mail já registado! Por favor inicie sessão para continuar.");
           navigate("/login");
         } else {
-          alert("Registered successfully! Please Login to proceed.");
+          alert(
+            "Conta criada com sucesso! Por favor inicie sessão para continuar."
+          );
           navigate("/login");
         }
       })
@@ -38,67 +40,84 @@ const Register = () => {
   return (
     <div>
       <div
-        className="d-flex justify-content-center align-items-center text-center vh-100"
         style={{
           backgroundImage: "linear-gradient(135deg, #1b2838, #1c3a54, #2a475e)",
+          minHeight: "100vh",
+          height: "auto",
         }}
+        className="d-flex flex-column"
       >
-        <div className="bg-white p-3 rounded" style={{ width: "40%" }}>
-          <h2>
-            <Link to="/Home" className="btn btn-dark btn-lg">
-              Home
+        <header className="d-flex justify-content-between align-items-center p-3">
+          <div>
+            {/* Logo que redireciona para a página home */}
+            <Link to="/">
+              <img
+                src="https://raw.githubusercontent.com/Dani12600000/Projeto_Integrado/refs/heads/main/frontend/DaniLike_Games.png"
+                alt="Logo"
+                style={{ height: "85px" }}
+              />
             </Link>
-          </h2>
-          <h2 className="mb-3 text-primary">Register</h2>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3 text-start">
-              <label htmlFor="exampleInputname" className="form-label">
-                <strong>Name</strong>
-              </label>
-              <input
-                type="text"
-                placeholder="Enter Name"
-                className="form-control"
-                id="exampleInputname"
-                onChange={(event) => setName(event.target.value)}
-                required
-              />
-            </div>
-            <div className="mb-3 text-start">
-              <label htmlFor="exampleInputEmail1" className="form-label">
-                <strong>Email Id</strong>
-              </label>
-              <input
-                type="email"
-                placeholder="Enter Email"
-                className="form-control"
-                id="exampleInputEmail1"
-                onChange={(event) => setEmail(event.target.value)}
-                required
-              />
-            </div>
-            <div className="mb-3 text-start">
-              <label htmlFor="exampleInputPassword1" className="form-label">
-                <strong>Password</strong>
-              </label>
-              <input
-                type="password"
-                placeholder="Enter Password"
-                className="form-control"
-                id="exampleInputPassword1"
-                onChange={(event) => setPassword(event.target.value)}
-                required
-              />
-            </div>
-            <button type="submit" className="btn btn-primary">
-              Register
-            </button>
-          </form>
+          </div>
+        </header>
+        <div
+          className="d-flex justify-content-center align-items-center text-center vh-95"
+          style={{
+            backgroundImage:
+              "linear-gradient(135deg, #1b2838, #1c3a54, #2a475e)",
+          }}
+        >
+          <div className="bg-white p-3 rounded" style={{ width: "40%" }}>
+            <h2 className="mb-3 text-primary">Criar conta</h2>
+            <form onSubmit={handleSubmit}>
+              <div className="mb-3 text-start">
+                <label htmlFor="exampleInputname" className="form-label">
+                  <strong>Name</strong>
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter Name"
+                  className="form-control"
+                  id="exampleInputname"
+                  onChange={(event) => setName(event.target.value)}
+                  required
+                />
+              </div>
+              <div className="mb-3 text-start">
+                <label htmlFor="exampleInputEmail1" className="form-label">
+                  <strong>Email Id</strong>
+                </label>
+                <input
+                  type="email"
+                  placeholder="Enter Email"
+                  className="form-control"
+                  id="exampleInputEmail1"
+                  onChange={(event) => setEmail(event.target.value)}
+                  required
+                />
+              </div>
+              <div className="mb-3 text-start">
+                <label htmlFor="exampleInputPassword1" className="form-label">
+                  <strong>Password</strong>
+                </label>
+                <input
+                  type="password"
+                  placeholder="Enter Password"
+                  className="form-control"
+                  id="exampleInputPassword1"
+                  onChange={(event) => setPassword(event.target.value)}
+                  required
+                />
+              </div>
+              <button type="submit" className="btn btn-primary">
+                Registar
+              </button>
+            </form>
 
-          <p className="container my-2">Already have an account ?</p>
-          <Link to="/login" className="btn btn-secondary">
-            Login
-          </Link>
+            <p className="container my-2">Já tem uma conta ?</p>
+            <Link to="/login" className="btn btn-secondary">
+              Iniciar sessão
+            </Link>
+          </div>
         </div>
       </div>
     </div>

@@ -28,8 +28,8 @@ const Login = () => {
 
       // Verifica se o login foi bem-sucedido
       if (loginResponse.data.status === "Success") {
-        console.log("Login Success");
-        alert("Login successful!");
+        console.log("Iniciada sessão com sucesso!");
+        alert("Iniciada sessão com sucesso!");
 
         // Armazena o ID e o nome do utilizador no localStorage
         localStorage.setItem("userId", loginResponse.data.id); // Supondo que o ID esteja no response
@@ -55,53 +55,70 @@ const Login = () => {
   return (
     <div>
       <div
-        className="d-flex justify-content-center align-items-center text-center vh-100"
         style={{
           backgroundImage: "linear-gradient(135deg, #1b2838, #1c3a54, #2a475e)",
+          minHeight: "100vh",
+          height: "auto",
         }}
+        className="d-flex flex-column"
       >
-        <div className="bg-white p-3 rounded" style={{ width: "40%" }}>
-          <h2>
-            <Link to="/Home" className="btn btn-dark btn-lg">
-              Home
+        <header className="d-flex justify-content-between align-items-center p-3">
+          <div>
+            {/* Logo que redireciona para a página home */}
+            <Link to="/">
+              <img
+                src="https://raw.githubusercontent.com/Dani12600000/Projeto_Integrado/refs/heads/main/frontend/DaniLike_Games.png"
+                alt="Logo"
+                style={{ height: "85px" }}
+              />
             </Link>
-          </h2>
-          <h2 className="mb-3 text-primary">Login</h2>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3 text-start">
-              <label htmlFor="exampleInputEmail1" className="form-label">
-                <strong>Email Id</strong>
-              </label>
-              <input
-                type="email"
-                placeholder="Enter Email"
-                className="form-control"
-                id="exampleInputEmail1"
-                onChange={(event) => setEmail(event.target.value)}
-                required
-              />
-            </div>
-            <div className="mb-3 text-start">
-              <label htmlFor="exampleInputPassword1" className="form-label">
-                <strong>Password</strong>
-              </label>
-              <input
-                type="password"
-                placeholder="Enter Password"
-                className="form-control"
-                id="exampleInputPassword1"
-                onChange={(event) => setPassword(event.target.value)}
-                required
-              />
-            </div>
-            <button type="submit" className="btn btn-primary">
-              Login
-            </button>
-          </form>
-          <p className="container my-2">Don&apos;t have an account?</p>
-          <Link to="/register" className="btn btn-secondary">
-            Register
-          </Link>
+          </div>
+        </header>
+        <div
+          className="d-flex justify-content-center align-items-center text-center vh-90"
+          style={{
+            backgroundImage:
+              "linear-gradient(135deg, #1b2838, #1c3a54, #2a475e)",
+          }}
+        >
+          <div className="bg-white p-3 rounded" style={{ width: "40%" }}>
+            <h2 className="mb-3 text-primary">Iniciar sessão</h2>
+            <form onSubmit={handleSubmit}>
+              <div className="mb-3 text-start">
+                <label htmlFor="exampleInputEmail1" className="form-label">
+                  <strong>Email Id</strong>
+                </label>
+                <input
+                  type="email"
+                  placeholder="Enter Email"
+                  className="form-control"
+                  id="exampleInputEmail1"
+                  onChange={(event) => setEmail(event.target.value)}
+                  required
+                />
+              </div>
+              <div className="mb-3 text-start">
+                <label htmlFor="exampleInputPassword1" className="form-label">
+                  <strong>Password</strong>
+                </label>
+                <input
+                  type="password"
+                  placeholder="Enter Password"
+                  className="form-control"
+                  id="exampleInputPassword1"
+                  onChange={(event) => setPassword(event.target.value)}
+                  required
+                />
+              </div>
+              <button type="submit" className="btn btn-primary">
+                Entrar
+              </button>
+            </form>
+            <p className="container my-2">Não tem uma conta?</p>
+            <Link to="/register" className="btn btn-secondary">
+              Criar conta
+            </Link>
+          </div>
         </div>
       </div>
     </div>
