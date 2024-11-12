@@ -132,7 +132,10 @@ const Home = () => {
                     key={game._id}
                     className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4"
                   >
-                    <div className="card h-100 text-center">
+                    <div
+                      className="card h-100 text-center"
+                      style={{ boxShadow: "10px 14px 8px rgba(0, 0, 0, 0.5)" }}
+                    >
                       <img
                         src={game.image}
                         alt={game.title}
