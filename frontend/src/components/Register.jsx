@@ -75,7 +75,7 @@ const Register = () => {
                 </label>
                 <input
                   type="text"
-                  placeholder="Enter Name"
+                  placeholder="Introduza o seu nome"
                   className="form-control"
                   id="exampleInputname"
                   onChange={(event) => setName(event.target.value)}
@@ -88,7 +88,7 @@ const Register = () => {
                 </label>
                 <input
                   type="email"
-                  placeholder="Enter Email"
+                  placeholder="Introduza o seu email"
                   className="form-control"
                   id="exampleInputEmail1"
                   onChange={(event) => setEmail(event.target.value)}
@@ -97,11 +97,11 @@ const Register = () => {
               </div>
               <div className="mb-3 text-start">
                 <label htmlFor="exampleInputPassword1" className="form-label">
-                  <strong>Password</strong>
+                  <strong>Palavra-passe</strong>
                 </label>
                 <input
                   type="password"
-                  placeholder="Enter Password"
+                  placeholder="Introduza uma palavra-passe"
                   className="form-control"
                   id="exampleInputPassword1"
                   onChange={(event) => setPassword(event.target.value)}

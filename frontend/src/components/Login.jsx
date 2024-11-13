@@ -86,11 +86,11 @@ const Login = () => {
             <form onSubmit={handleSubmit}>
               <div className="mb-3 text-start">
                 <label htmlFor="exampleInputEmail1" className="form-label">
-                  <strong>Email Id</strong>
+                  <strong>Email</strong>
                 </label>
                 <input
                   type="email"
-                  placeholder="Enter Email"
+                  placeholder="Introduza o email"
                   className="form-control"
                   id="exampleInputEmail1"
                   onChange={(event) => setEmail(event.target.value)}
@@ -103,7 +103,7 @@ const Login = () => {
                 </label>
                 <input
                   type="password"
-                  placeholder="Enter Password"
+                  placeholder="Introduza a palavra-passe"
                   className="form-control"
                   id="exampleInputPassword1"
                   onChange={(event) => setPassword(event.target.value)}
