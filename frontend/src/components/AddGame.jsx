@@ -134,9 +134,9 @@ const AddGame = () => {
         <div>
           {userName ? (
             <>
-              <span className="text-light me-3">Welcome, {userName}</span>
+              <span className="text-light me-3">Olá, {userName}</span>
               <button className="btn btn-light" onClick={handleLogout}>
-                Logout
+                Sair
               </button>
             </>
           ) : (
