@@ -7,19 +7,35 @@ const AddGame = () => {
   const [rating, setRating] = useState("");
   const [image, setImage] = useState("");
   const [description, setDescription] = useState("");
-  const [categories, setCategories] = useState([]); // Armazena as categorias
-  const [categoryInput, setCategoryInput] = useState(""); // Input para a nova categoria
-  const [year, setYear] = useState(""); // Campo para o ano do jogo
+  const [suggestedCategories, setSuggestedCategories] = useState([]); // Categorias sugeridas
+  const [filteredSuggestions, setFilteredSuggestions] = useState([]); // Sugestões filtradas
+  const [categories, setCategories] = useState([]); // Categorias selecionadas para o jogo
+  const [categoryInput, setCategoryInput] = useState(""); // Input para nova categoria
+  const [year, setYear] = useState("");
   const [userName, setUserName] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
-  // Verifica se o utilizador está logado e obtém o nome do utilizador do localStorage
   useEffect(() => {
     const name = localStorage.getItem("userName");
     if (name) {
-      setUserName(name); // Define o nome do utilizador
+      setUserName(name);
     }
+  }, []);
+
+  // Busca as categorias dos jogos existentes para sugestões
+  useEffect(() => {
+    const fetchCategoriesFromGames = async () => {
+      try {
+        const response = await axios.get("http://localhost:3001/games");
+        const allCategories = response.data.flatMap((game) => game.categories);
+        const uniqueCategories = [...new Set(allCategories)];
+        setSuggestedCategories(uniqueCategories);
+      } catch (error) {
+        console.error("Erro ao buscar categorias dos jogos:", error);
+      }
+    };
+    fetchCategoriesFromGames();
   }, []);
 
   const handleLogout = () => {
@@ -28,27 +44,45 @@ const AddGame = () => {
     navigate("/login");
   };
 
-  // Função para adicionar categorias
-  const handleAddCategory = (e) => {
-    e.preventDefault();
+  const handleAddCategory = () => {
     if (categoryInput && !categories.includes(categoryInput)) {
-      setCategories([...categories, categoryInput]); // Adiciona a nova categoria à lista
-      setCategoryInput(""); // Limpa o campo de input
+      setCategories([...categories, categoryInput]);
+      setCategoryInput("");
+      setFilteredSuggestions([]);
     }
   };
 
-  // Função para remover uma categoria
   const handleRemoveCategory = (categoryToRemove) => {
     setCategories(
       categories.filter((category) => category !== categoryToRemove)
     );
   };
 
-  // Função para adicionar um jogo à base de dados
+  const handleCategoryInputChange = (e) => {
+    const input = e.target.value;
+    setCategoryInput(input);
+
+    if (input) {
+      const filtered = suggestedCategories.filter((category) =>
+        category.toLowerCase().includes(input.toLowerCase())
+      );
+      setFilteredSuggestions(filtered);
+    } else {
+      setFilteredSuggestions([]);
+    }
+  };
+
+  const handleSelectSuggestion = (suggestion) => {
+    if (!categories.includes(suggestion)) {
+      setCategories([...categories, suggestion]);
+    }
+    setCategoryInput("");
+    setFilteredSuggestions([]);
+  };
+
   const handleAddGame = async (e) => {
     e.preventDefault();
 
-    // Validação simples para garantir que os campos estejam preenchidos
     if (
       !title ||
       !rating ||
@@ -58,7 +92,7 @@ const AddGame = () => {
       categories.length === 0
     ) {
       setErrorMessage(
-        "Todos os campos, incluindo ano e categorias, são obrigatórios."
+        "Todos os campos são obrigatórios, incluindo categorias."
       );
       return;
     }
@@ -68,7 +102,7 @@ const AddGame = () => {
       const response = await axios.post("http://localhost:3001/games", newGame);
 
       if (response.status === 200 || response.status === 201) {
-        navigate("/"); // Redireciona para a home após adicionar o jogo com sucesso
+        navigate("/");
       } else {
         setErrorMessage("Erro ao adicionar o jogo.");
       }
@@ -82,7 +116,8 @@ const AddGame = () => {
     <div
       style={{
         backgroundImage: "linear-gradient(135deg, #1b2838, #1c3a54, #2a475e)",
-        height: "100vh",
+        minHeight: "100vh",
+        height: "100%",
       }}
       className="d-flex flex-column"
     >
@@ -165,21 +200,39 @@ const AddGame = () => {
             className="form-control mb-3"
             required
           />
-          <div className="mb-3">
+          <div className="mb-3 position-relative">
             <input
               type="text"
               placeholder="Nova categoria"
               value={categoryInput}
-              onChange={(e) => setCategoryInput(e.target.value)}
+              onChange={handleCategoryInputChange}
               className="form-control mb-2"
             />
+
+            {/* Exibir sugestões apenas se houver opções filtradas */}
+            {filteredSuggestions.length > 0 && (
+              <div className="position-absolute w-100 bg-light border">
+                {filteredSuggestions.map((suggestion, index) => (
+                  <div
+                    key={index}
+                    onClick={() => handleSelectSuggestion(suggestion)}
+                    className="p-2"
+                    style={{ cursor: "pointer" }}
+                  >
+                    {suggestion}
+                  </div>
+                ))}
+              </div>
+            )}
+
             <button
-              className="btn btn-primary mb-3"
+              className="btn btn-primary mt-2"
               onClick={handleAddCategory}
+              type="button"
             >
               Adicionar Categoria
             </button>
-            <div>
+            <div className="mt-2">
               {categories.map((category, index) => (
                 <span key={index} className="badge bg-info me-2">
                   {category}
@@ -192,6 +245,7 @@ const AddGame = () => {
               ))}
             </div>
           </div>
+
           <button type="submit" className="btn btn-success">
             Adicionar Jogo
           </button>
