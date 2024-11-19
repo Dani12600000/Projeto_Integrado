@@ -1,27 +1,24 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios"; // Para fazer a requisição ao backend
+import axios from "axios";
 
 const Home = () => {
   const [userName, setUserName] = useState("");
-  const [games, setGames] = useState([]); // Armazena os jogos da base de dados
-  const [filteredGames, setFilteredGames] = useState([]); // Armazena os jogos filtrados
-  const [loading, setLoading] = useState(true); // Controla o carregamento dos dados
-  const [searchTerm, setSearchTerm] = useState(""); // Armazena o termo da procura
+  const [games, setGames] = useState([]);
+  const [filteredGames, setFilteredGames] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Verifica se o utilizador está logado e obtém o nome do utilizador do localStorage
     const name = localStorage.getItem("userName");
     if (name) {
-      setUserName(name); // Seta o nome do utilizador
+      setUserName(name);
     }
 
-    // Faz a requisição para encontrar os jogos do MongoDB
     const fetchGames = async () => {
       try {
-        const response = await axios.get("http://localhost:3001/games"); // Rota que retorna os jogos
-        // Ordena os jogos pela avaliação antes de definir o estado
+        const response = await axios.get("http://localhost:3001/games");
         const sortedGames = response.data
           .map((game) => {
             const ratings = game.reviews.map((review) => review.rating);
@@ -30,14 +27,14 @@ const Home = () => {
                 ? (ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(
                     1
                   )
-                : game.rating; // Usa a rating padrão se não houver avaliações
-            return { ...game, averageRating }; // Adiciona a média ao jogo
+                : game.rating;
+            return { ...game, averageRating };
           })
           .sort((a, b) => b.averageRating - a.averageRating);
 
-        setGames(sortedGames); // Seta os jogos ordenados no estado
-        setFilteredGames(sortedGames); // Seta os jogos filtrados inicialmente como todos os jogos
-        setLoading(false); // Desativa o estado de carregamento
+        setGames(sortedGames);
+        setFilteredGames(sortedGames);
+        setLoading(false);
       } catch (error) {
         console.error("Erro ao encontrar jogos:", error);
         setLoading(false);
@@ -48,7 +45,6 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    // Filtra os jogos com base no termo de procura
     const filtered = games.filter(
       (game) =>
         game.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -60,10 +56,50 @@ const Home = () => {
   }, [searchTerm, games]);
 
   const handleLogout = () => {
-    // Limpa os dados do utilizador do localStorage
-    localStorage.removeItem("userId"); // Limpa o ID do utilizador
-    localStorage.removeItem("userName"); // Limpa o nome do utilizador
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userName");
     navigate("/login");
+  };
+
+  const handleDeleteGame = async (gameId) => {
+    const confirmDelete = window.confirm(
+      "Tem a certeza que deseja apagar este jogo?"
+    );
+
+    if (!confirmDelete) {
+      return; // Cancela a exclusão
+    }
+
+    try {
+      console.log("Apagando jogo com ID:", gameId);
+
+      // Apaga o jogo
+      const deleteResponse = await axios.delete(
+        `http://localhost:3001/games/${gameId}`
+      );
+      console.log("Resposta da exclusão do jogo:", deleteResponse.data);
+
+      // Remove o jogo dos favoritos
+      const updateResponse = await axios.put(
+        "http://localhost:3001/users/remove-favorite",
+        { gameId }
+      );
+      console.log(
+        "Resposta da atualização dos favoritos:",
+        updateResponse.data
+      );
+
+      // Atualiza os jogos localmente
+      setGames((prevGames) => prevGames.filter((game) => game._id !== gameId));
+      setFilteredGames((prevFiltered) =>
+        prevFiltered.filter((game) => game._id !== gameId)
+      );
+
+      alert("Jogo apagado com sucesso!");
+    } catch (error) {
+      console.error("Erro ao apagar jogo:", error);
+      alert("Não foi possível apagar o jogo.");
+    }
   };
 
   return (
@@ -77,7 +113,6 @@ const Home = () => {
     >
       <header className="d-flex justify-content-between align-items-center p-3">
         <div>
-          {/* Logo que redireciona para a página home */}
           <Link to="/">
             <img
               src="https://raw.githubusercontent.com/Dani12600000/Projeto_Integrado/refs/heads/main/frontend/DaniLike_Games.png"
@@ -122,7 +157,7 @@ const Home = () => {
           />
         </div>
         {loading ? (
-          <p>Carregando jogos...</p> // Mostra mensagem de carregamento enquanto os dados não chegam
+          <p>Carregando jogos...</p>
         ) : (
           <div className="container">
             <div className="row">
@@ -150,15 +185,28 @@ const Home = () => {
                         <p className="card-text">
                           Favoritos: {game.favoriteCount}
                         </p>
-                        <Link to={`/game/${game._id}`} className="btn btn-info">
-                          Ver detalhes
-                        </Link>
+                        <div className="d-flex justify-content-center gap-2">
+                          <Link
+                            to={`/game/${game._id}`}
+                            className="btn btn-info"
+                          >
+                            Ver detalhes
+                          </Link>
+                          {userName === "Admin" && (
+                            <button
+                              className="btn btn-danger"
+                              onClick={() => handleDeleteGame(game._id)}
+                            >
+                              Apagar
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
                 ))
               ) : (
-                <p>Nenhum jogo encontrado.</p> // Caso não haja jogos na base de dados
+                <p>Nenhum jogo encontrado.</p>
               )}
             </div>
           </div>

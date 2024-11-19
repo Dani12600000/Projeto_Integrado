@@ -197,6 +197,39 @@ app.post("/games/:id/review", (req, res) => {
     );
 });
 
+// Rota para apagar um jogo
+app.delete("/games/:id", async (req, res) => {
+  try {
+    const gameId = req.params.id;
+
+    // Remove o jogo da coleção de jogos
+    await GameModel.findByIdAndDelete(gameId);
+
+    res.status(200).send("Jogo apagado com sucesso!");
+  } catch (error) {
+    console.error("Erro ao apagar jogo:", error);
+    res.status(500).send("Erro ao apagar jogo.");
+  }
+});
+
+// Rota para remover o jogo dos favoritos dos utilizadores
+app.put("/users/remove-favorite", async (req, res) => {
+  const { gameId } = req.body;
+
+  try {
+    // Atualiza todos os utilizadores, removendo o jogo dos favoritos
+    await FormDataModel.updateMany(
+      { favorites: gameId },
+      { $pull: { favorites: gameId } }
+    );
+
+    res.status(200).send("Jogo removido dos favoritos com sucesso!");
+  } catch (error) {
+    console.error("Erro ao remover jogo dos favoritos:", error);
+    res.status(500).send("Erro ao remover jogo dos favoritos.");
+  }
+});
+
 // Inicia o servidor na porta 3001
 app.listen(3001, () => {
   console.log("Server listening on http://localhost:3001");
