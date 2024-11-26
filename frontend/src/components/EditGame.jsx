@@ -68,6 +68,14 @@ const EditGame = () => {
     );
   };
 
+  const handleSelectSuggestion = (suggestion) => {
+    if (!categories.includes(suggestion)) {
+      setCategories([...categories, suggestion]);
+    }
+    setCategoryInput("");
+    setFilteredSuggestions([]);
+  };
+
   const handleAddCategory = () => {
     if (categoryInput && !categories.includes(categoryInput)) {
       setCategories([...categories, categoryInput]);
@@ -195,13 +203,24 @@ const EditGame = () => {
               onChange={handleCategoryInputChange}
               className="form-control mb-2"
             />
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
+
+            {/* Exibir sugestões apenas se houver opções filtradas */}
+            {filteredSuggestions.length > 0 && (
+              <div className="position-absolute w-100 bg-light border">
+                {filteredSuggestions.map((suggestion, index) => (
+                  <div
+                    key={index}
+                    onClick={() => handleSelectSuggestion(suggestion)}
+                    className="p-2"
+                    style={{ cursor: "pointer" }}
+                  >
+                    {suggestion}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="d-flex justify-content-center">
               <button
                 type="button"
                 onClick={handleAddCategory}
