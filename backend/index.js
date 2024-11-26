@@ -230,6 +230,27 @@ app.put("/users/remove-favorite", async (req, res) => {
   }
 });
 
+// Rota para atualizar os dados de um jogo
+app.put("/games/:id", async (req, res) => {
+  const gameId = req.params.id;
+  const updatedData = req.body;
+
+  try {
+    // Atualiza o jogo no MongoDB
+    const updatedGame = await GameModel.findByIdAndUpdate(gameId, updatedData, {
+      new: true, // Retorna o jogo atualizado
+    });
+
+    if (!updatedGame) {
+      return res.status(404).json({ message: "Jogo não encontrado." });
+    }
+
+    res.status(200).json(updatedGame);
+  } catch (error) {
+    res.status(500).json({ message: "Erro ao atualizar o jogo.", error });
+  }
+});
+
 // Inicia o servidor na porta 3001
 app.listen(3001, () => {
   console.log("Server listening on http://localhost:3001");

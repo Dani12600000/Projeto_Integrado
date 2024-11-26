@@ -5,6 +5,7 @@ import GameDetailsg from "./GameDetailsg";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AddGame from "./AddGame";
 import Profile from "./Profile";
+import EditGame from "./EditGame";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/game/:id" element={<GameDetailsg />} />
           <Route path="/addgame" element={<AddGame />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/edit-game/:id" element={<EditGame />} />
         </Routes>
       </BrowserRouter>
     </div>

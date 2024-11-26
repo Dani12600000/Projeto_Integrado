@@ -193,12 +193,20 @@ const Home = () => {
                             Ver detalhes
                           </Link>
                           {userName === "Admin" && (
-                            <button
-                              className="btn btn-danger"
-                              onClick={() => handleDeleteGame(game._id)}
-                            >
-                              Apagar
-                            </button>
+                            <>
+                              <Link
+                                to={`/edit-game/${game._id}`}
+                                className="btn btn-warning"
+                              >
+                                Editar
+                              </Link>
+                              <button
+                                className="btn btn-danger"
+                                onClick={() => handleDeleteGame(game._id)}
+                              >
+                                Apagar
+                              </button>
+                            </>
                           )}
                         </div>
                       </div>
