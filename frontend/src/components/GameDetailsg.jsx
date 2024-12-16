@@ -179,10 +179,10 @@ const GameDetails = () => {
             ) : (
               <>
                 <Link to="/login" className="btn btn-primary me-2">
-                  Login
+                  Iniciar Sessão
                 </Link>
                 <Link to="/register" className="btn btn-secondary">
-                  Register
+                  Criar conta
                 </Link>
               </>
             )}
